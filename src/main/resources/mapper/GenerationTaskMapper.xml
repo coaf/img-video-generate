@@ -27,7 +27,7 @@
 
     <!-- Insert -->
     <insert id="insert" parameterType="com.example.ivi.entity.GenerationTask" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO generation_tasks (
+        INSERT INTO generation_task (
             task_type, prompt, status, result_url, alibaba_task_id, error_message, 
             parameters, user_id, task_id, created_at, updated_at, complete_time
         ) VALUES (
@@ -40,7 +40,7 @@
     <select id="selectById" parameterType="java.lang.Long" resultMap="BaseResultMap">
         SELECT 
         <include refid="Base_Column_List" />
-        FROM generation_tasks
+        FROM generation_task
         WHERE id = #{id}
     </select>
 
@@ -48,7 +48,7 @@
     <select id="selectByTaskId" parameterType="java.lang.String" resultMap="BaseResultMap">
         SELECT 
         <include refid="Base_Column_List" />
-        FROM generation_tasks
+        FROM generation_task
         WHERE task_id = #{taskId}
     </select>
 
@@ -56,14 +56,14 @@
     <select id="selectByUserId" parameterType="java.lang.String" resultMap="BaseResultMap">
         SELECT 
         <include refid="Base_Column_List" />
-        FROM generation_tasks
+        FROM generation_task
         WHERE user_id = #{userId}
         ORDER BY created_at DESC
     </select>
 
     <!-- Update Status -->
     <update id="updateStatus">
-        UPDATE generation_tasks
+        UPDATE generation_task
         SET status = #{status}, updated_at = #{updatedAt}
         WHERE id = #{id}
     </update>
