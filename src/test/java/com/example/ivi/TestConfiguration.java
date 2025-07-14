@@ -1,4 +1,4 @@
-package com.example.hello;
+package com.example.ivi;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -11,10 +11,10 @@ import org.springframework.context.annotation.FilterType;
  */
 @SpringBootApplication(exclude = {DataSourceAutoConfiguration.class})
 @ComponentScan(
-    basePackages = "com.example.hello",
+    basePackages = "com.example.ivi",
     excludeFilters = {
-        @ComponentScan.Filter(type = FilterType.REGEX, pattern = "com\\.example\\.hello\\.mapper\\..*"),
-        @ComponentScan.Filter(type = FilterType.REGEX, pattern = "com\\.example\\.hello\\.config\\.MyBatisPlusConfig")
+        @ComponentScan.Filter(type = FilterType.REGEX, pattern = "com\\.example\\.ivi\\.mapper\\..*"),
+        @ComponentScan.Filter(type = FilterType.REGEX, pattern = "com\\.example\\.ivi\\.config\\.MyBatisPlusConfig")
     }
 )
 public class TestConfiguration {

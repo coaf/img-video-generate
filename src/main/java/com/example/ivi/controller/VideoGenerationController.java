@@ -1,40 +1,41 @@
-package com.example.hello.controller;
+package com.example.ivi.controller;
 
-import com.example.hello.dto.TextToImageRequest;
-import com.example.hello.dto.GenerationResponse;
-import com.example.hello.service.TextToImageService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import com.example.ivi.dto.GenerationResponse;
+import com.example.ivi.dto.TextToVideoRequest;
+import com.example.ivi.service.TextToVideoService;
+
 import jakarta.validation.Valid;
 
 /**
- * Image generation REST controller
+ * Video generation REST controller
  */
 @Slf4j
 @RestController
-@RequestMapping("/api/v1/image")
+@RequestMapping("/api/v1/video")
 @RequiredArgsConstructor
 @Validated
-public class ImageGenerationController {
+public class VideoGenerationController {
     
-    private final TextToImageService textToImageService;
+    private final TextToVideoService textToVideoService;
     
     /**
-     * Generate image from text prompt
+     * Generate video from text prompt
      */
     @PostMapping("/generate")
-    public ResponseEntity<GenerationResponse> generateImage(@Valid @RequestBody TextToImageRequest request) {
-        log.info("Received image generation request: {}", request.getPrompt());
+    public ResponseEntity<GenerationResponse> generateVideo(@Valid @RequestBody TextToVideoRequest request) {
+        log.info("Received video generation request: {}", request.getPrompt());
         
         try {
-            GenerationResponse response = textToImageService.generateImage(request);
+            GenerationResponse response = textToVideoService.generateVideo(request);
             return ResponseEntity.ok(response);
         } catch (Exception e) {
-            log.error("Error generating image", e);
+            log.error("Error generating video", e);
             return ResponseEntity.internalServerError()
                     .body(GenerationResponse.error(null, "Internal server error: " + e.getMessage()));
         }
@@ -48,7 +49,7 @@ public class ImageGenerationController {
         log.info("Checking status for task: {}", taskId);
         
         try {
-            GenerationResponse response = textToImageService.checkTaskStatus(taskId);
+            GenerationResponse response = textToVideoService.checkTaskStatus(taskId);
             return ResponseEntity.ok(response);
         } catch (Exception e) {
             log.error("Error checking task status", e);

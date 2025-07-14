@@ -1,6 +1,5 @@
-package com.example.hello.exception;
+package com.example.ivi.exception;
 
-import com.example.hello.dto.GenerationResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -9,6 +8,8 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+import com.example.ivi.dto.GenerationResponse;
 
 import java.util.ArrayList;
 import java.util.List;

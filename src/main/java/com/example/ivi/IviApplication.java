@@ -1,5 +1,8 @@
-package com.example.hello;
+package com.example.ivi;
 
+import javax.swing.text.IconView;
+
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -9,10 +12,11 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
  */
 @SpringBootApplication
 @EnableConfigurationProperties
-public class HelloApplication {
+@MapperScan("com.example.ivi.mapper")
+public class IviApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(HelloApplication.class, args);
+        SpringApplication.run(IviApplication.class, args);
     }
 
 }

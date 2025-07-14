@@ -60,13 +60,13 @@ CREATE TABLE t_generation_task (
 ## Architecture
 
 ### Package Structure
-- `com.example.hello.entity` - JPA entities with MyBatis Plus annotations
-- `com.example.hello.mapper` - MyBatis Plus mappers
-- `com.example.hello.service` - Business logic services
-- `com.example.hello.controller` - REST controllers
-- `com.example.hello.dto` - Data Transfer Objects
-- `com.example.hello.config` - Configuration classes
-- `com.example.hello.exception` - Exception handling
+- `com.example.ivi.entity` - JPA entities with MyBatis Plus annotations
+- `com.example.ivi.mapper` - MyBatis Plus mappers
+- `com.example.ivi.service` - Business logic services
+- `com.example.ivi.controller` - REST controllers
+- `com.example.ivi.dto` - Data Transfer Objects
+- `com.example.ivi.config` - Configuration classes
+- `com.example.ivi.exception` - Exception handling
 
 ### Key Components
 

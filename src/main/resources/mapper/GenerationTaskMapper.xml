@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.example.hello.mapper.GenerationTaskMapper">
+<mapper namespace="com.example.ivi.mapper.GenerationTaskMapper">
 
     <!-- Result Map -->
-    <resultMap id="BaseResultMap" type="com.example.hello.entity.GenerationTask">
+    <resultMap id="BaseResultMap" type="com.example.ivi.entity.GenerationTask">
         <id column="id" property="id" jdbcType="BIGINT"/>
         <result column="task_type" property="taskType" jdbcType="VARCHAR"/>
         <result column="prompt" property="prompt" jdbcType="LONGVARCHAR"/>
@@ -26,7 +26,7 @@
     </sql>
 
     <!-- Insert -->
-    <insert id="insert" parameterType="com.example.hello.entity.GenerationTask" useGeneratedKeys="true" keyProperty="id">
+    <insert id="insert" parameterType="com.example.ivi.entity.GenerationTask" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO generation_tasks (
             task_type, prompt, status, result_url, alibaba_task_id, error_message, 
             parameters, user_id, task_id, created_at, updated_at, complete_time
@@ -53,7 +53,7 @@
     </select>
 
     <!-- Select by User ID -->
-    <select id="selectByUserId" parameterType="java.lang.String" resultType="com.example.hello.entity.GenerationTask">
+    <select id="selectByUserId" parameterType="java.lang.String" resultMap="BaseResultMap">
         SELECT 
         <include refid="Base_Column_List" />
         FROM generation_tasks

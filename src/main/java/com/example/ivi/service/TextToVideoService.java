@@ -1,10 +1,10 @@
-package com.example.hello.service;
+package com.example.ivi.service;
 
-import com.example.hello.config.AlibabaCloudConfig;
-import com.example.hello.dto.TextToVideoRequest;
-import com.example.hello.dto.GenerationResponse;
-import com.example.hello.entity.GenerationTask;
-import com.example.hello.mapper.GenerationTaskMapper;
+import com.example.ivi.config.AlibabaCloudConfig;
+import com.example.ivi.dto.GenerationResponse;
+import com.example.ivi.dto.TextToVideoRequest;
+import com.example.ivi.entity.GenerationTask;
+import com.example.ivi.mapper.GenerationTaskMapper;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
