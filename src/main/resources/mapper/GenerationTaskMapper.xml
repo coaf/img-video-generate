@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.hello.mapper.GenerationTaskMapper">
+
+    <!-- Result Map -->
+    <resultMap id="BaseResultMap" type="com.example.hello.entity.GenerationTask">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="task_type" property="taskType" jdbcType="VARCHAR"/>
+        <result column="prompt" property="prompt" jdbcType="LONGVARCHAR"/>
+        <result column="status" property="status" jdbcType="VARCHAR"/>
+        <result column="result_url" property="resultUrl" jdbcType="VARCHAR"/>
+        <result column="alibaba_task_id" property="alibabaTaskId" jdbcType="VARCHAR"/>
+        <result column="error_message" property="errorMessage" jdbcType="LONGVARCHAR"/>
+        <result column="parameters" property="parameters" jdbcType="LONGVARCHAR"/>
+        <result column="user_id" property="userId" jdbcType="VARCHAR"/>
+        <result column="task_id" property="taskId" jdbcType="VARCHAR"/>
+        <result column="created_at" property="createdAt" jdbcType="TIMESTAMP"/>
+        <result column="updated_at" property="updatedAt" jdbcType="TIMESTAMP"/>
+        <result column="complete_time" property="completeTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <!-- Base Column List -->
+    <sql id="Base_Column_List">
+        id, task_type, prompt, status, result_url, alibaba_task_id, error_message, 
+        parameters, user_id, task_id, created_at, updated_at, complete_time
+    </sql>
+
+    <!-- Insert -->
+    <insert id="insert" parameterType="com.example.hello.entity.GenerationTask" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO generation_tasks (
+            task_type, prompt, status, result_url, alibaba_task_id, error_message, 
+            parameters, user_id, task_id, created_at, updated_at, complete_time
+        ) VALUES (
+            #{taskType}, #{prompt}, #{status}, #{resultUrl}, #{alibabaTaskId}, #{errorMessage}, 
+            #{parameters}, #{userId}, #{taskId}, #{createdAt}, #{updatedAt}, #{completeTime}
+        )
+    </insert>
+
+    <!-- Select by ID -->
+    <select id="selectById" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        SELECT 
+        <include refid="Base_Column_List" />
+        FROM generation_tasks
+        WHERE id = #{id}
+    </select>
+
+    <!-- Select by Task ID -->
+    <select id="selectByTaskId" parameterType="java.lang.String" resultMap="BaseResultMap">
+        SELECT 
+        <include refid="Base_Column_List" />
+        FROM generation_tasks
+        WHERE task_id = #{taskId}
+    </select>
+
+    <!-- Select by User ID -->
+    <select id="selectByUserId" parameterType="java.lang.String" resultType="com.example.hello.entity.GenerationTask">
+        SELECT 
+        <include refid="Base_Column_List" />
+        FROM generation_tasks
+        WHERE user_id = #{userId}
+        ORDER BY created_at DESC
+    </select>
+
+    <!-- Update Status -->
+    <update id="updateStatus">
+        UPDATE generation_tasks
+        SET status = #{status}, updated_at = #{updatedAt}
+        WHERE id = #{id}
+    </update>
+
+</mapper>
