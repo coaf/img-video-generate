@@ -1,0 +1,93 @@
+### Image Generation API Tests
+
+### 1. Generate Image - Basic Request
+POST http://localhost:8080/api/v1/image/generate
+Content-Type: application/json
+
+{
+  "prompt": "A beautiful sunset over the ocean with waves crashing on the shore"
+}
+
+### 2. Generate Image - Full Parameters
+POST http://localhost:8080/api/v1/image/generate
+Content-Type: application/json
+
+{
+  "prompt": "A futuristic city with flying cars and neon lights at night",
+  "size": "1024*1024",
+  "n": 1,
+  "quality": "hd",
+  "style": "vivid"
+}
+
+### 3. Generate Image - Different Size
+POST http://localhost:8080/api/v1/image/generate
+Content-Type: application/json
+
+{
+  "prompt": "A cute cat sitting in a garden with flowers",
+  "size": "512*512",
+  "n": 1,
+  "quality": "standard",
+  "style": "natural"
+}
+
+### 4. Generate Image - Multiple Images
+POST http://localhost:8080/api/v1/image/generate
+Content-Type: application/json
+
+{
+  "prompt": "Abstract art with geometric shapes and bright colors",
+  "size": "1024*1024",
+  "n": 2,
+  "quality": "hd",
+  "style": "vivid"
+}
+
+### 5. Generate Image - Invalid Request (Empty Prompt)
+POST http://localhost:8080/api/v1/image/generate
+Content-Type: application/json
+
+{
+  "prompt": "",
+  "size": "1024*1024"
+}
+
+### 6. Check Task Status - Replace {taskId} with actual task ID from generation response
+GET http://localhost:8080/api/v1/image/status/1
+
+### 7. Check Task Status - Non-existent Task
+GET http://localhost:8080/api/v1/image/status/999999
+
+### 8. Generate Image - Landscape Scene
+POST http://localhost:8080/api/v1/image/generate
+Content-Type: application/json
+
+{
+  "prompt": "A serene mountain landscape with snow-capped peaks and a crystal clear lake",
+  "size": "1024*1024",
+  "quality": "hd",
+  "style": "natural"
+}
+
+### 9. Generate Image - Portrait Style
+POST http://localhost:8080/api/v1/image/generate
+Content-Type: application/json
+
+{
+  "prompt": "Professional headshot of a business person in modern office setting",
+  "size": "512*512",
+  "quality": "standard",
+  "style": "vivid"
+}
+
+### 10. Generate Image - Artistic Style
+POST http://localhost:8080/api/v1/image/generate
+Content-Type: application/json
+
+{
+  "prompt": "Van Gogh style painting of a starry night over a small village",
+  "size": "1024*1024",
+  "quality": "hd",
+  "style": "natural"
+}
