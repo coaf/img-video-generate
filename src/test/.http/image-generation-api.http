@@ -54,7 +54,7 @@ Content-Type: application/json
 }
 
 ### 6. Check Task Status - Replace {taskId} with actual task ID from generation response
-GET http://localhost:8080/api/v1/image/status/1
+GET http://localhost:8080/api/v1/image/status/2
 
 ### 7. Check Task Status - Non-existent Task
 GET http://localhost:8080/api/v1/image/status/999999

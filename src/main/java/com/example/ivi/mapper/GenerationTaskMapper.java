@@ -21,5 +21,9 @@ public interface GenerationTaskMapper {
     
     int updateStatus(@Param("id") Long id, @Param("status") String status, @Param("updatedAt") java.time.LocalDateTime updatedAt);
     
+    int updateStatusAndAlibabaTaskId(@Param("id") Long id, @Param("status") String status, @Param("alibabaTaskId") String alibabaTaskId, @Param("updatedAt") java.time.LocalDateTime updatedAt);
+    
+    int updateTaskCompletion(@Param("id") Long id, @Param("status") String status, @Param("resultUrl") String resultUrl, @Param("errorMessage") String errorMessage, @Param("completeTime") java.time.LocalDateTime completeTime, @Param("updatedAt") java.time.LocalDateTime updatedAt);
+    
     List<GenerationTask> selectByUserId(String userId);
 }

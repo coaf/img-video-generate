@@ -1,0 +1,129 @@
+### Video Generation API Tests
+### Based on Alibaba Cloud DashScope Text-to-Video API Documentation
+
+### 1. Basic video generation request (16:9 aspect ratio)
+POST http://localhost:8080/api/v1/video/generate
+Content-Type: application/json
+
+{
+  "prompt": "一只小猫在月光下奔跑"
+}
+
+### 2. Video generation with 9:16 aspect ratio (vertical)
+POST http://localhost:8080/api/v1/video/generate
+Content-Type: application/json
+
+{
+  "prompt": "美丽的日落风景，海浪轻拍沙滩",
+  "aspectRatio": "9:16"
+}
+
+### 3. Video generation with 1:1 aspect ratio (square)
+POST http://localhost:8080/api/v1/video/generate
+Content-Type: application/json
+
+{
+  "prompt": "花园里盛开的玫瑰花，微风轻拂",
+  "aspectRatio": "1:1"
+}
+
+### 4. Video generation with 4:3 aspect ratio
+POST http://localhost:8080/api/v1/video/generate
+Content-Type: application/json
+
+{
+  "prompt": "古老的图书馆，阳光透过窗户洒在书架上",
+  "aspectRatio": "4:3"
+}
+
+### 5. Video generation with 3:4 aspect ratio
+POST http://localhost:8080/api/v1/video/generate
+Content-Type: application/json
+
+{
+  "prompt": "城市夜景，霓虹灯闪烁",
+  "aspectRatio": "3:4"
+}
+
+### 6. Complex scene description
+POST http://localhost:8080/api/v1/video/generate
+Content-Type: application/json
+
+{
+  "prompt": "森林中的小溪缓缓流淌，阳光透过树叶洒下斑驳的光影，鸟儿在枝头歌唱",
+  "aspectRatio": "16:9"
+}
+
+### 7. Animation style prompt
+POST http://localhost:8080/api/v1/video/generate
+Content-Type: application/json
+
+{
+  "prompt": "卡通风格的小熊在彩虹桥上跳舞，背景是蓝天白云",
+  "aspectRatio": "16:9"
+}
+
+### 8. Nature scene
+POST http://localhost:8080/api/v1/video/generate
+Content-Type: application/json
+
+{
+  "prompt": "雪山顶峰，云雾缭绕，雄鹰在天空中翱翔",
+  "aspectRatio": "16:9"
+}
+
+### 9. Urban scene
+POST http://localhost:8080/api/v1/video/generate
+Content-Type: application/json
+
+{
+  "prompt": "繁忙的街道，人们匆忙走过，车辆川流不息",
+  "aspectRatio": "9:16"
+}
+
+### 10. Abstract concept
+POST http://localhost:8080/api/v1/video/generate
+Content-Type: application/json
+
+{
+  "prompt": "时间的流逝，钟表指针快速转动，日月交替",
+  "aspectRatio": "1:1"
+}
+
+### 11. Invalid request - empty prompt (should return 400)
+POST http://localhost:8080/api/v1/video/generate
+Content-Type: application/json
+
+{
+  "prompt": ""
+}
+
+### 12. Invalid request - null prompt (should return 400)
+POST http://localhost:8080/api/v1/video/generate
+Content-Type: application/json
+
+{
+  "aspectRatio": "16:9"
+}
+
+### 13. Invalid request - unsupported aspect ratio (should use default)
+POST http://localhost:8080/api/v1/video/generate
+Content-Type: application/json
+
+{
+  "prompt": "测试不支持的宽高比",
+  "aspectRatio": "21:9"
+}
+
+### 14. Check task status by ID (replace {taskId} with actual task ID)
+GET http://localhost:8080/api/v1/video/status/1
+
+### 15. Check non-existent task status (should return 404)
+GET http://localhost:8080/api/v1/video/status/99999
+
+### Note: 
+### - All video generation requests are asynchronous and will return a task ID
+### - Video duration is fixed at 5 seconds according to Alibaba Cloud API
+### - Supported aspect ratios: 16:9, 9:16, 1:1, 4:3, 3:4
+### - The actual video generation may take 5-10 minutes to complete
+### - Use the status endpoint to check the progress of your video generation task

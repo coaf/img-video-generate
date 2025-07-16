@@ -68,4 +68,22 @@
         WHERE id = #{id}
     </update>
 
+    <!-- Update status and Alibaba task ID -->
+    <update id="updateStatusAndAlibabaTaskId">
+        UPDATE generation_task
+        SET status = #{status}, alibaba_task_id = #{alibabaTaskId}, updated_at = #{updatedAt}
+        WHERE id = #{id}
+    </update>
+
+    <!-- Update task completion -->
+    <update id="updateTaskCompletion">
+        UPDATE generation_task
+        SET status = #{status}, 
+            result_url = #{resultUrl}, 
+            error_message = #{errorMessage}, 
+            complete_time = #{completeTime}, 
+            updated_at = #{updatedAt}
+        WHERE id = #{id}
+    </update>
+
 </mapper>

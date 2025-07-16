@@ -61,7 +61,7 @@ public class TextToVideoService {
             task.setAlibabaTaskId(alibabaTaskId);
             task.setStatus("PROCESSING");
             task.setUpdatedAt(LocalDateTime.now());
-            generationTaskMapper.updateStatus(task.getId(), task.getStatus(), task.getUpdatedAt());
+            generationTaskMapper.updateStatusAndAlibabaTaskId(task.getId(), task.getStatus(), alibabaTaskId, task.getUpdatedAt());
             
             log.info("Text to video generation started successfully, task ID: {}, Alibaba task ID: {}", 
                     task.getId(), alibabaTaskId);
@@ -92,18 +92,21 @@ public class TextToVideoService {
             input.put("prompt", request.getPrompt());
             
             Map<String, Object> parameters = new HashMap<>();
-            parameters.put("duration", request.getDuration());
-            parameters.put("aspect_ratio", request.getAspectRatio());
-            parameters.put("quality", request.getQuality());
+            // Convert aspectRatio to size format according to API documentation
+            String size = convertAspectRatioToSize(request.getAspectRatio());
+            parameters.put("size", size);
+            // Note: duration is fixed at 5 seconds according to API documentation
+            // parameters.put("duration", 5);
             
             requestBody.put("input", input);
             requestBody.put("parameters", parameters);
             
-            // Make API call
+            // Make API call with correct URL and headers
             String response = webClient.post()
-                    .uri(alibabaCloudConfig.getBaseUrl() + "/services/aigc/text2video/generation")
+                    .uri(alibabaCloudConfig.getBaseUrl() + "/services/aigc/video-generation/video-synthesis")
                     .header(HttpHeaders.AUTHORIZATION, "Bearer " + alibabaCloudConfig.getApiKey())
                     .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                    .header("X-DashScope-Async", "enable")
                     .bodyValue(requestBody)
                     .retrieve()
                     .bodyToMono(String.class)
@@ -138,13 +141,13 @@ public class TextToVideoService {
             try {
                 checkAlibabaTaskStatus(task);
                 task.setUpdatedAt(LocalDateTime.now());
-                generationTaskMapper.updateStatus(task.getId(), task.getStatus(), task.getUpdatedAt());
+                generationTaskMapper.updateTaskCompletion(task.getId(), task.getStatus(), task.getResultUrl(), task.getErrorMessage(), task.getCompleteTime(), task.getUpdatedAt());
             } catch (Exception e) {
                 log.error("Error checking task status from Alibaba Cloud", e);
                 task.setStatus("FAILED");
                 task.setErrorMessage(e.getMessage());
                 task.setUpdatedAt(LocalDateTime.now());
-                generationTaskMapper.updateStatus(task.getId(), task.getStatus(), task.getUpdatedAt());
+                generationTaskMapper.updateTaskCompletion(task.getId(), task.getStatus(), null, task.getErrorMessage(), LocalDateTime.now(), task.getUpdatedAt());
             }
         }
         
@@ -173,11 +176,13 @@ public class TextToVideoService {
                     task.setStatus("COMPLETED");
                     task.setCompleteTime(LocalDateTime.now());
                     
-                    // Extract result URL
-                    if (output.has("results") && output.get("results").isArray() && 
-                        output.get("results").size() > 0) {
-                        String resultUrl = output.get("results").get(0).get("url").asText();
-                        task.setResultUrl(resultUrl);
+                    // Extract video URL from output.video_url
+                    if (output.has("video_url")) {
+                        String videoUrl = output.get("video_url").asText();
+                        task.setResultUrl(videoUrl);
+                        log.info("Video generation completed successfully, video URL: {}", videoUrl);
+                    } else {
+                        log.warn("Video generation succeeded but no video_url found in response");
                     }
                 } else if ("FAILED".equals(taskStatus)) {
                     task.setStatus("FAILED");
@@ -188,6 +193,33 @@ public class TextToVideoService {
             
         } catch (Exception e) {
             throw new RuntimeException("Failed to check task status from Alibaba Cloud: " + e.getMessage(), e);
+        }
+    }
+    
+    /**
+     * Convert aspect ratio to size format according to Alibaba Cloud API documentation
+     * @param aspectRatio the aspect ratio (e.g., "16:9", "9:16", "1:1", "4:3", "3:4")
+     * @return the size format (e.g., "1280*720", "720*1280", "960*960")
+     */
+    private String convertAspectRatioToSize(String aspectRatio) {
+        if (aspectRatio == null) {
+            return "1280*720"; // Default 16:9 720P
+        }
+        
+        switch (aspectRatio) {
+            case "16:9":
+                return "1280*720"; // 720P 16:9
+            case "9:16":
+                return "720*1280"; // 720P 9:16
+            case "1:1":
+                return "960*960";  // 720P 1:1
+            case "4:3":
+                return "1088*832"; // 720P 4:3
+            case "3:4":
+                return "832*1088"; // 720P 3:4
+            default:
+                log.warn("Unsupported aspect ratio: {}, using default 16:9", aspectRatio);
+                return "1280*720"; // Default 16:9 720P
         }
     }
 }

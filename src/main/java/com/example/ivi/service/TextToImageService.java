@@ -61,7 +61,7 @@ public class TextToImageService {
             task.setAlibabaTaskId(alibabaTaskId);
             task.setStatus("PROCESSING");
             task.setUpdatedAt(LocalDateTime.now());
-            generationTaskMapper.updateStatus(task.getId(), task.getStatus(), task.getUpdatedAt());
+            generationTaskMapper.updateStatusAndAlibabaTaskId(task.getId(), task.getStatus(), alibabaTaskId, task.getUpdatedAt());
             
             log.info("Text to image generation started successfully, task ID: {}, Alibaba task ID: {}", 
                     task.getId(), alibabaTaskId);
@@ -142,13 +142,13 @@ public class TextToImageService {
             try {
                 checkAlibabaTaskStatus(task);
                 task.setUpdatedAt(LocalDateTime.now());
-                generationTaskMapper.updateStatus(task.getId(), task.getStatus(), task.getUpdatedAt());
+                generationTaskMapper.updateTaskCompletion(task.getId(), task.getStatus(), task.getResultUrl(), task.getErrorMessage(), task.getCompleteTime(), task.getUpdatedAt());
             } catch (Exception e) {
                 log.error("Error checking task status from Alibaba Cloud", e);
                 task.setStatus("FAILED");
                 task.setErrorMessage(e.getMessage());
                 task.setUpdatedAt(LocalDateTime.now());
-                generationTaskMapper.updateStatus(task.getId(), task.getStatus(), task.getUpdatedAt());
+                generationTaskMapper.updateTaskCompletion(task.getId(), task.getStatus(), null, task.getErrorMessage(), LocalDateTime.now(), task.getUpdatedAt());
             }
         }
         
