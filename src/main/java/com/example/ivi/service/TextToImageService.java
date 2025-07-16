@@ -94,8 +94,10 @@ public class TextToImageService {
             Map<String, Object> parameters = new HashMap<>();
             parameters.put("size", request.getSize());
             parameters.put("n", request.getN());
-            parameters.put("quality", request.getQuality());
-            parameters.put("style", request.getStyle());
+            // Note: quality and style parameters may not be supported by all model versions
+            // Uncomment if your model version supports these parameters:
+            // parameters.put("quality", request.getQuality());
+            // parameters.put("style", request.getStyle());
             
             requestBody.put("input", input);
             requestBody.put("parameters", parameters);
@@ -105,6 +107,7 @@ public class TextToImageService {
                     .uri(alibabaCloudConfig.getBaseUrl() + "/services/aigc/text2image/image-synthesis")
                     .header(HttpHeaders.AUTHORIZATION, "Bearer " + alibabaCloudConfig.getApiKey())
                     .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                    .header("X-DashScope-Async", "enable")
                     .bodyValue(requestBody)
                     .retrieve()
                     .bodyToMono(String.class)
